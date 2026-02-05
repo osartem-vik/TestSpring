@@ -19,8 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
+@OpenAPIDefinition
 @RestController
 @RequestMapping(path = "/api/users")
 @RequiredArgsConstructor
@@ -56,6 +60,13 @@ public class UserController {
     return userService.getUsers();
   }
 
+  @Operation(
+      summary = "Get user by id",
+      description = "Returns user if exist"
+  )
+
+  @ApiResponse(responseCode = "200", description = "User found")
+  @ApiResponse(responseCode = "404", description = "User not found.")
   @GetMapping(path = "/{id}")
   public UserInfoDto getById(@PathVariable Long id) {
     return userService.getUser(id);

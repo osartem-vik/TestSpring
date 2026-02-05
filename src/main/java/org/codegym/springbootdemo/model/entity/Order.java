@@ -1,14 +1,18 @@
 package org.codegym.springbootdemo.model.entity;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -17,26 +21,28 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "users")
+@Table(name = "orders")
 @Data
-@ToString(exclude = "orders")
+@ToString(exclude = "items")
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class User {
+public class Order {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-  @Column(name = "fisrt_name")
-  private String firstName;
-  @Column(name = "last_name")
-  private String lastName;
-  private String password;
-  private LocalDate birthDate;
-  private Double salary;
-  @Column(unique = true)
-  private String email;
-  private Integer age;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<Order> orders;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
+
+  @Enumerated(EnumType.STRING)
+  private OrderStatus status;
+
+  private BigDecimal totalPrice;
+
+  private LocalDateTime createdAt;
+
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<OrderItem> items;
 }
