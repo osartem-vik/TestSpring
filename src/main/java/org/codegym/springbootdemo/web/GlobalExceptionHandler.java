@@ -1,6 +1,9 @@
 package org.codegym.springbootdemo.web;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Map;
+
 import org.codegym.springbootdemo.exception.InsufficientStockException;
 import org.codegym.springbootdemo.exception.OrderNotFoundException;
 import org.codegym.springbootdemo.exception.ProductNotFoundException;
@@ -35,10 +38,20 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
   }
 
-  @ExceptionHandler(InsufficientStockException.class)
-  public ResponseEntity<String> handleInsufficientStockException(InsufficientStockException e) {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-  }
+//  @ExceptionHandler(InsufficientStockException.class)
+//  public ResponseEntity<String> handleInsufficientStockException(InsufficientStockException e) {
+//    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//  }
+@ExceptionHandler(InsufficientStockException.class)
+public ResponseEntity<Map<String, Object>> handleInsufficientStock(InsufficientStockException ex) {
+  Map<String, Object> body = new HashMap<>();
+  body.put("timestamp", LocalDateTime.now());
+  body.put("status", HttpStatus.BAD_REQUEST.value());
+  body.put("error", "Bad Request");
+  body.put("message", ex.getMessage());
+
+  return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+}
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
