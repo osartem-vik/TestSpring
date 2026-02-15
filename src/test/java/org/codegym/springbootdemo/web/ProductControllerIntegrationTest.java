@@ -150,7 +150,7 @@ class ProductControllerIntegrationTest {
     @Test
     void createProduct_shouldReturn400_whenNameIsEmpty() throws Exception {
         ProductDto invalid = new ProductDto();
-        invalid.setName("");           // нарушение @NotBlank
+        invalid.setName("");
         invalid.setPrice(BigDecimal.valueOf(10));
         invalid.setQuantity(5);
 

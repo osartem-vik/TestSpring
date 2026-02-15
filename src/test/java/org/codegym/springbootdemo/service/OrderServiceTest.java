@@ -87,7 +87,7 @@ class OrderServiceTest {
         List<Product> savedProducts = productCaptor.getAllValues();
         assertThat(savedProducts)
                 .extracting(Product::getQuantity)
-                .containsExactly(7, 3);   // 10-3, 5-2
+                .containsExactly(7, 3);
 
         verify(orderRepository).save(argThat(order -> {
             assertThat(order.getTotalPrice()).isEqualByComparingTo(BigDecimal.valueOf(25*3 + 80*2));
@@ -97,7 +97,7 @@ class OrderServiceTest {
     }
 
     @Test
-    void create_shouldThrowWhenInsufficientStock() {
+    void createShouldThrowWhenInsufficientStock() {
         User user = new User();
         Product product = new Product();
         product.setId(1L);

@@ -109,8 +109,8 @@ class OrderControllerTest {
     }
 
     @Test
-    void patchOrder_shouldReturn200AndUpdatedPatchDto_whenStatusChanged() throws Exception {
-        // given
+    void patchOrderShouldReturn200AndUpdatedPatchDtoWhenStatusChanged() throws Exception {
+
         PatchOrderDto patchDto = new PatchOrderDto();
         patchDto.setStatus(OrderStatus.CONFIRMED);
 
